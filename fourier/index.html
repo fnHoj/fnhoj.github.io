@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fourier Transform</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            touch-action: none;
+            font-family: sans-serif;
+            font-size: 24px;
+            user-select: none;
+        }
+        @media screen and (width <= 1200px) {
+            body {
+                flex-direction: column;
+            }
+        }
+        body {
+            margin: 0;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+        }
+        #canvas {
+            flex: 0 1 720px;
+            margin: 32px;
+        }
+        #side {
+            flex: 1 1 0;
+            margin: 32px;
+        }
+        input {
+            display: block;
+            inline-size: 100%;
+        }
+        .caption {
+            font-size: 80%;
+            text-align: center;
+            margin-block-end: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="720" height="720"></canvas>
+    <div id="side">
+        <h1>Fourier transform <u style="font-size: 120%;">ANYTHING</u></h1>
+        <p>Draw with mouse/touchscreen.</p>
+        <p id="num-circles" class="caption">12 circles</p>
+        <input id="circles" type="range" min="1" max="20" step="1" value="6"/>
+        <p id="num-playback" class="caption">Playback speed: 0.25x</p>
+        <input id="playback" type="range" min="0.05" max="1.2" step="0.01" value="0.25"/>
+    </div>
+
+    <script src="fourier.js"></script>
+</body>
+</html>
