@@ -1,76 +1,81 @@
 class Complex {
-    re;
-    im;
-    constructor(re = 0, im = 0) {
+    re: number; im: number;
+
+    constructor(re: number = 0, im: number = 0) {
         this.re = re;
         this.im = im;
     }
-    copy() {
+
+    copy(): Complex {
         return new Complex(this.re, this.im);
     }
-    add(other) {
-        return new Complex(this.re + other.re, this.im + other.im);
+    add(other: Complex): Complex {
+        return new Complex(this.re + other.re, this.im + other.im)
     }
-    addeq(other) {
+    addeq(other: Complex): Complex {
         this.re += other.re;
         this.im += other.im;
         return this;
     }
-    sub(other) {
-        return new Complex(this.re - other.re, this.im - other.im);
+    sub(other: Complex): Complex {
+        return new Complex(this.re - other.re, this.im - other.im)
     }
-    mul(k) {
+    mul(k: number | Complex): Complex {
         if (typeof k === "number")
             return new Complex(this.re * k, this.im * k);
         return new Complex(this.re * k.re - this.im * k.im, this.re * k.im + this.im * k.re);
     }
-    muleq(k) {
+    muleq(k: number): Complex {
         this.re *= k;
         this.im *= k;
         return this;
     }
-    div(k) {
+    div(k: number): Complex {
         return new Complex(this.re / k, this.im / k);
     }
-    diveq(k) {
+    diveq(k: number): Complex {
         this.re /= k;
         this.im /= k;
         return this;
     }
-    rot(turns) {
-        const theta = 2 * Math.PI * turns;
+    rot(turns: number): Complex {
+        const theta = 2 * Math.PI * turns
         const c = Math.cos(theta);
         const s = Math.sin(theta);
         return new Complex(this.re * c - this.im * s, this.re * s + this.im * c);
     }
-    len() {
+
+    len(): number {
         return Math.hypot(this.re, this.im);
     }
 }
-function rot(turns) {
+
+function rot(turns: number): Complex {
     const theta = 2 * Math.PI * turns;
     return new Complex(Math.cos(theta), Math.sin(theta));
 }
+
 class Point {
-    t;
-    p;
-    constructor(p, t) {
+    t: number; p: Complex;
+
+    constructor(p: Complex, t: number) {
         this.p = p.copy();
         this.t = t;
     }
 }
+
 class Graph {
-    n;
-    t;
-    points;
-    coeffs;
-    order;
-    constructor(n, t, points) {
+    n: number; t: number;
+    points: Point[];
+    coeffs: Complex[];
+    order: number[]
+
+    constructor(n: number, t: number, points: Point[]) {
         this.n = n;
         this.t = t;
         this.points = points;
         this.coeffs = [];
-        this.order = [];
+        this.order = []
         for (let f = -n; f <= n; f++) {
             this.coeffs.push(new Complex());
             if (!f)
@@ -81,7 +86,11 @@ class Graph {
                 const tprev = this.prog(i - 1);
                 const tcurr = this.prog(i);
                 const tnext = this.prog(i + 1);
-                this.coeffs[n + f].addeq(this.points[i].p.div(w * w).mul(rot(-f * tcurr).sub(rot(-f * tprev)).div(tcurr - tprev).sub(rot(-f * tnext).sub(rot(-f * tcurr)).div(tnext - tcurr))));
+                this.coeffs[n + f].addeq(this.points[i].p.div(w * w).mul(
+                    rot(-f * tcurr).sub(rot(-f * tprev)).div(tcurr - tprev).sub(
+                        rot(-f * tnext).sub(rot(-f * tcurr)).div(tnext - tcurr)
+                    )
+                ));
             }
         }
         for (let i = 0; i < this.points.length; i++) {
@@ -90,32 +99,36 @@ class Graph {
         this.coeffs[this.n].diveq(2);
         this.order.sort((f1, f2) => this.coeffs[n + f2].len() - this.coeffs[n + f1].len());
     }
-    prog(i) {
+    prog(i: number): number {
         const leaps = Math.floor(i / this.points.length);
         return this.points[i - leaps * this.points.length].t / this.t + leaps;
     }
 }
+
 const n = 6;
-const canvas = document.getElementById("canvas");
-const circles = document.getElementById("circles");
-const num_circles = document.getElementById("num-circles");
-const playback = document.getElementById("playback");
-const num_playback = document.getElementById("num-playback");
-const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+const circles = document.getElementById("circles") as HTMLInputElement;
+const num_circles = document.getElementById("num-circles") as HTMLParagraphElement;
+const playback = document.getElementById("playback") as HTMLInputElement;
+const num_playback = document.getElementById("num-playback") as HTMLParagraphElement;
+const ctx = canvas.getContext("2d")!;
+
 let t0 = performance.now();
 let prevt = performance.now();
 let spd = 0.25;
 let phase = 0;
 let tc = 0;
 let recording = false;
-let points = [];
+let points: Point[] = [];
 let dist = 0;
 let graph = new Graph(4, 2000, [new Point(new Complex(360, -360), 0)]);
-let curve = [];
-function parse_coords(e) {
+let curve: Complex[] = [];
+
+function parse_coords(e: PointerEvent): Complex {
     return new Complex(canvas.width * e.offsetX / canvas.offsetWidth, -canvas.height * e.offsetY / canvas.offsetHeight);
 }
-function handle_pointerdown(p) {
+
+function handle_pointerdown(p: Complex) {
     if (recording)
         return;
     t0 = performance.now();
@@ -123,20 +136,23 @@ function handle_pointerdown(p) {
     recording = true;
     dist = 0;
 }
-function handle_pointermove(p) {
+
+function handle_pointermove(p: Complex) {
     if (!recording)
         return;
     points.push(new Point(p, performance.now() - t0));
-    dist += points.at(-1).p.sub(points.at(-2).p).len();
+    dist += points.at(-1)!.p.sub(points.at(-2)!.p).len();
 }
+
 function handle_pointerup() {
     if (!recording)
         return;
-    graph = new Graph(n, (performance.now() - t0) * (1 + points.at(-1).p.sub(points[0].p).len() / (2 * dist)), points);
+    graph = new Graph(n, (performance.now() - t0) * (1 + points.at(-1)!.p.sub(points[0].p).len() / (2 * dist)), points);
     recording = false;
     phase = tc = 0;
     curve = [];
 }
+
 function draw_path() {
     if (!points.length)
         return;
@@ -150,6 +166,7 @@ function draw_path() {
     ctx.closePath();
     ctx.stroke();
 }
+
 function render_fourier(t = phase) {
     let p = graph.coeffs[graph.n].copy();
     ctx.strokeStyle = "#fff";
@@ -180,6 +197,7 @@ function render_fourier(t = phase) {
         ctx.closePath();
     ctx.stroke();
 }
+
 function frame() {
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, 720, 720);
@@ -191,6 +209,7 @@ function frame() {
         render_fourier();
     requestAnimationFrame(frame);
 }
+
 function init() {
     graph.coeffs = [
         new Complex(0, 100),
@@ -202,7 +221,7 @@ function init() {
         new Complex(),
         new Complex(-60, 80),
         new Complex(0, 100),
-    ];
+    ]
     graph.order = [-4, 3, -3, 4];
     ctx.fillStyle = "#000";
     ctx.lineCap = "round";
@@ -231,7 +250,8 @@ function init() {
     playback.addEventListener("input", () => {
         spd = Number.parseFloat(playback.value);
         num_playback.textContent = `Playback speed: ${spd}x`;
-    });
+    })
     frame();
 }
+
 init();
