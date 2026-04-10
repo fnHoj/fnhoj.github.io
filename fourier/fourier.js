@@ -76,13 +76,14 @@ class Graph {
             if (!f)
                 continue;
             this.order.push(f);
-            const w = 2 * Math.PI * f;
             for (let i = 0; i < this.points.length; i++) {
                 const tprev = this.prog(i - 1);
                 const tcurr = this.prog(i);
                 const tnext = this.prog(i + 1);
-                this.coeffs[n + f].addeq(this.points[i].p.div(w * w).mul(rot(-f * tcurr).sub(rot(-f * tprev)).div(tcurr - tprev).sub(rot(-f * tnext).sub(rot(-f * tcurr)).div(tnext - tcurr))));
+                this.coeffs[n + f].addeq(this.points[i].p.mul(rot(-f * tcurr).sub(rot(-f * tprev)).div(tcurr - tprev).sub(rot(-f * tnext).sub(rot(-f * tcurr)).div(tnext - tcurr))));
             }
+            const w = 2 * Math.PI * f;
+            this.coeffs[n + f].diveq(w * w);
         }
         for (let i = 0; i < this.points.length; i++) {
             this.coeffs[n].addeq(this.points[i].p.mul(this.prog(i + 1) - this.prog(i - 1)));
@@ -210,11 +211,6 @@ function init() {
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.fillRect(0, 0, 720, 720);
-    ctx.fillStyle = "#fff";
-    ctx.font = "24px sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("（鼠标划动绘制曲线）", 360, 360);
     canvas.addEventListener("pointerdown", e => handle_pointerdown(parse_coords(e)));
     canvas.addEventListener("pointermove", e => handle_pointermove(parse_coords(e)));
     addEventListener("mouseup", handle_pointerup);
@@ -226,7 +222,6 @@ function init() {
         num_circles.textContent = `${circles.value} circles`;
         c = Number.parseInt(circles.value);
         if (points.length) {
-            // graph = new Graph(Number.parseInt(circles.value), graph.t, points);
             curve = [];
             tc = phase;
         }
