@@ -105,7 +105,7 @@ class Graph {
     }
 }
 
-const n = 6;
+const n = 20;
 const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const circles = document.getElementById("circles") as HTMLInputElement;
 const num_circles = document.getElementById("num-circles") as HTMLParagraphElement;
@@ -113,6 +113,7 @@ const playback = document.getElementById("playback") as HTMLInputElement;
 const num_playback = document.getElementById("num-playback") as HTMLParagraphElement;
 const ctx = canvas.getContext("2d")!;
 
+let c = 12;
 let t0 = performance.now();
 let prevt = performance.now();
 let spd = 0.25;
@@ -157,7 +158,7 @@ function draw_path() {
     if (!points.length)
         return;
     ctx.strokeStyle = "#0a0";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(points[0].p.re, -points[0].p.im);
     for (let i = 1; i < points.length; i++) {
@@ -170,7 +171,8 @@ function draw_path() {
 function render_fourier(t = phase) {
     let p = graph.coeffs[graph.n].copy();
     ctx.strokeStyle = "#fff";
-    for (const f of graph.order) {
+    for (let i = 0; i < c && i < graph.order.length; i++) {
+        const f = graph.order[i];
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(p.re, -p.im, graph.coeffs[graph.n + f].len(), 0, Math.PI * 2);
@@ -240,9 +242,10 @@ function init() {
     addEventListener("touchend", handle_pointerup);
     addEventListener("touchcancel", handle_pointerup);
     circles.addEventListener("input", () => {
-        num_circles.textContent = `${Number.parseInt(circles.value) << 1} circles`;
+        num_circles.textContent = `${circles.value} circles`;
+        c = Number.parseInt(circles.value);
         if (points.length) {
-            graph = new Graph(Number.parseInt(circles.value), graph.t, points);
+            // graph = new Graph(Number.parseInt(circles.value), graph.t, points);
             curve = [];
             tc = phase;
         }
