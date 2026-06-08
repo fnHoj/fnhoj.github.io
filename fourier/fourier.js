@@ -207,10 +207,8 @@ function init() {
         new Complex(0, 100),
     ];
     graph.order = [-4, 3, -3, 4];
-    ctx.fillStyle = "#000";
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.fillRect(0, 0, 720, 720);
     canvas.addEventListener("pointerdown", e => handle_pointerdown(parse_coords(e)));
     canvas.addEventListener("pointermove", e => handle_pointermove(parse_coords(e)));
     addEventListener("mouseup", handle_pointerup);

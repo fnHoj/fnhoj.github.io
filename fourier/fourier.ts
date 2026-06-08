@@ -10,7 +10,7 @@ class Complex {
         return new Complex(this.re, this.im);
     }
     add(other: Complex): Complex {
-        return new Complex(this.re + other.re, this.im + other.im)
+        return new Complex(this.re + other.re, this.im + other.im);
     }
     addeq(other: Complex): Complex {
         this.re += other.re;
@@ -18,7 +18,7 @@ class Complex {
         return this;
     }
     sub(other: Complex): Complex {
-        return new Complex(this.re - other.re, this.im - other.im)
+        return new Complex(this.re - other.re, this.im - other.im);
     }
     mul(k: number | Complex): Complex {
         if (typeof k === "number")
@@ -39,7 +39,7 @@ class Complex {
         return this;
     }
     rot(turns: number): Complex {
-        const theta = 2 * Math.PI * turns
+        const theta = 2 * Math.PI * turns;
         const c = Math.cos(theta);
         const s = Math.sin(theta);
         return new Complex(this.re * c - this.im * s, this.re * s + this.im * c);
@@ -226,10 +226,8 @@ function init() {
         new Complex(0, 100),
     ]
     graph.order = [-4, 3, -3, 4];
-    ctx.fillStyle = "#000";
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.fillRect(0, 0, 720, 720);
     canvas.addEventListener("pointerdown", e => handle_pointerdown(parse_coords(e)));
     canvas.addEventListener("pointermove", e => handle_pointermove(parse_coords(e)));
     addEventListener("mouseup", handle_pointerup);

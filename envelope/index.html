@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envelopes</title>
+    <style>
+        :root {
+            background-color: #e8e3dc;
+            overflow: hidden;
+        }
+        body {
+            margin: 0;
+            position: absolute;
+            inset: 0;
+        }
+        canvas {
+            margin: auto;
+            position: absolute;
+            inset: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="320" height="800"></canvas>
+
+    <script>
+        const /** @type {HTMLCanvasElement} */ canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const letter = new Image();
+        const back = new Image();
+        const front = new Image();
+        const tip = new Image();
+        const seal = new Image();
+        const avatar = new Image();
+
+        const FY = 48;
+        const FY2 = FY * 2;
+
+        let y = FY2;
+        
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.translate(0, canvas.height - 160);
+            ctx.drawImage(back, 0, 0);
+            if (y >= 0) {
+                ctx.drawImage(letter, 10, 10);
+                ctx.drawImage(front, 0, 0);
+                ctx.scale(1, y <= 0 ? -1 : y / FY - 1);
+                ctx.drawImage(tip, 0, 0);
+            }
+            else {
+                ctx.scale(1, -1);
+                ctx.drawImage(tip, 0, 0);
+                ctx.scale(1, -1);
+                ctx.drawImage(letter, 10, 10 + y);
+                ctx.drawImage(front, 0, 0);
+            }
+            ctx.resetTransform();
+            ctx.drawImage(seal, 124, canvas.height - 125);
+            const AR = 20;
+            ctx.drawImage(avatar, 160 - AR, canvas.height - 89 - AR, AR * 2, AR * 2);
+        }
+
+        function frame() {
+            render();
+            requestAnimationFrame(frame);
+        }
+
+        letter.src = "letter.png";
+        back.src = "envelopes/brown/back.svg";
+        front.src = "envelopes/brown/front.svg";
+        tip.src = "envelopes/brown/tip.svg";
+        seal.src = "seals/red.svg";
+        avatar.src = "Coder-Osman.svg";
+
+        addEventListener("wheel", e => {
+            y += e.deltaY;
+            if (y >= FY2)
+                y = FY2;
+        });
+
+        frame();
+    </script>
+</body>
+</html>
