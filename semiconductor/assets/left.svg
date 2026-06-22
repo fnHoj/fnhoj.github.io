@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64px" height="64px" viewBox="0 0 16 16">
+    <defs>
+        <style>
+            :root {
+                color-scheme: dark;
+            }
+            path {
+                fill: none;
+                stroke: #fff;
+            }
+        </style>
+    </defs>
+    <path d="M 1 15 V 6 H 16"/>
+</svg>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semiconductor</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            font-size: 32px;
+            text-align: center;
+        }
+        #canvas {
+            display: block;
+            margin-inline: auto;
+        }
+        input[type=range] {
+            display: block;
+            inline-size: 90%;
+            margin-inline: auto;
+        }
+        #side {
+            font-weight: bold;
+            font-size: 200%;
+        }
+        #side > div {
+            inline-size: calc(50% - 320px);
+        }
+        #side > div > span {
+            display: inline-block;
+            text-align: center;
+            inline-size: 1em;
+            margin-block-start: calc(150px - 0.5lh);
+        }
+        .circuit {
+            display: inline-block;
+            inline-size: 64px;
+            block-size: 64px;
+            vertical-align: middle;
+        }
+        #left {
+            background-image: url(assets/left.svg);
+        }
+        #right {
+            background-image: url(assets/right.svg);
+        }
+        .forward #left {
+            background-image: url(assets/forward_left.svg);
+        }
+        .forward #right {
+            background-image: url(assets/forward_right.svg);
+        }
+        .reverse #left {
+            background-image: url(assets/reverse_left.svg);
+        }
+        .reverse #right {
+            background-image: url(assets/reverse_right.svg);
+        }
+    </style>
+</head>
+<body>
+    <div id="side">
+        <div style="text-align: end; float: left;">
+            <div class="circuit" id="left"></div>
+            <span style="background-color: #404040; color: #fff;">P</span>
+        </div>
+        <div style="text-align: start; float: right;">
+            <span style="background-color: #b0b0b0; color: #000;">N</span>
+            <div class="circuit" id="right"></div>
+        </div>
+    </div>
+    <canvas id="canvas" width="1280" height="720"></canvas>
+    <div>
+        ← 反向电压 | 正向电压 →
+        <input id="voltage" type="range" min="-480" max="480" step="8"/>
+    </div>
+    <div>
+        温度 →
+        <input id="temperature" type="range" min="0" max="0.002" step="0.0001" value="0"/>
+    </div>
+
+    <script src="dist/vec2.js"></script>
+    <script src="dist/semiconductor.js"></script>
+    <script src="dist/render.js"></script>
+</body>
+</html>
