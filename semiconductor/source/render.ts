@@ -66,11 +66,11 @@ function render(): void {
 let t = performance.now();
 function frame() {
     motion();
-    while (voltage() > V + 2 * R) {
+    while (half_voltage() > V + R) {
         particles.push(new Particle(new Vec2(-R, Math.random()), true));
         particles.push(new Particle(new Vec2(R, Math.random()), false));
     }
-    while (voltage() < V - 2 * R) {
+    while (half_voltage() < V - R) {
         particles.push(new Particle(new Vec2(R, Math.random()), true));
         particles.push(new Particle(new Vec2(-R, Math.random()), false));
     }

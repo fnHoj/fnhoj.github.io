@@ -30,7 +30,7 @@ class Particle {
     }
 }
 const particles = [];
-function voltage() {
+function half_voltage() {
     let v = -rho * R * R;
     for (const p of particles) {
         if (p.neg)
@@ -38,7 +38,7 @@ function voltage() {
         else
             v -= p.pos.x;
     }
-    return 2 * v;
+    return v;
 }
 function motion(dt = 1000 / 60) {
     for (let i = 0; i < particles.length; i++) {

@@ -35,7 +35,7 @@ class Particle {
 
 const particles: Particle[] = [];
 
-function voltage(): number {
+function half_voltage(): number {
     let v = -rho * R * R;
     for (const p of particles) {
         if (p.neg)
@@ -43,7 +43,7 @@ function voltage(): number {
         else
             v -= p.pos.x;
     }
-    return 2 * v;
+    return v;
 }
 
 function motion(dt: number = 1000 / 60) {
