@@ -42,9 +42,9 @@ function render(): void {
     ctx.fillRect(0, height, width, height);
     ctx.fillStyle = "#444";
     ctx.fillRect(0, height * 1.5 - 1, width, 2);
-    ctx.fillRect(0, height * (1.5 - kv * 0.5 * V) - 1, half_width, 2);
+    ctx.fillRect(0, height * (1.5 - kv * V) - 1, half_width, 2);
     ctx.fillRect(half_width - 1, height, 2, height);
-    ctx.fillRect(half_width, height * (1.5 + kv * 0.5 * V) + 1, half_width, 2);
+    ctx.fillRect(half_width, height * (1.5 + kv * V) + 1, half_width, 2);
     ctx.strokeStyle = "#fff";
     ctx.lineWidth = 2;
     ctx.beginPath();
