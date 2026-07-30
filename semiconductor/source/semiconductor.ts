@@ -20,7 +20,7 @@ function repel(source: Vec2, dist: Vec2): Vec2 {
     const dx = PI2 * (source.x - dist.x);
     const dy = PI2 * (source.y - dist.y);
     return new Vec2(Math.sinh(dx), Math.sin(dy))
-        .div(Math.cosh(dx) - Math.cos(dy));
+        .div(Math.max(0.0001, Math.cosh(dx) - Math.cos(dy)));
 }
 
 class Particle {
@@ -62,15 +62,15 @@ function motion(dt: number = 1000 / 60) {
             particles[i].pos.minus_eq(E);
         else
             particles[i].pos.plus_eq(E);
-        particles[i].pos.plus_eq(randVec(D * Math.sqrt(dt)));
+        // particles[i].pos.plus_eq(randVec(D * Math.sqrt(dt)));
         if ((particles[i].pos.y %= 1) < 0)
             particles[i].pos.y++;
     }
     for (let i = 0; i < particles.length; i++) {
-        for (let j = 1; j < particles.length; j++) {
+        for (let j = i + 1; j < particles.length; j++) {
             if (particles[i].neg === particles[j].neg)
                 continue;
-            if (dist2(particles[i].pos, particles[j].pos) < R2_COLLIDE) {
+            if (dist2(particles[i].pos, particles[j].pos) < R2_COLLIDE && Math.random() < 0.05) {
                 particles.splice(j, 1);
                 particles.splice(i, 1);
                 i--;

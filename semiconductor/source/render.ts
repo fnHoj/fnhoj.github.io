@@ -74,6 +74,13 @@ function frame() {
         particles.push(new Particle(new Vec2(R, Math.random()), true));
         particles.push(new Particle(new Vec2(-R, Math.random()), false));
     }
+    for (let i = 0; i < 0x10; i++) {
+        if (Math.random() < D) {
+            const x = new Vec2(R * (2 * Math.random() - 1), Math.random());
+            particles.push(new Particle(x, false));
+            particles.push(new Particle(x, true));
+        }
+    }
     render();
     requestAnimationFrame(frame);
 }
