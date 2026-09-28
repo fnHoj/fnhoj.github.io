@@ -1,6 +1,6 @@
 "use strict";
 const PI2 = Math.PI * 2;
-const beta = -1e-3;
+const beta = -5e-4;
 const K = 4e-4;
 // const g = new Vec3(0, 0, -1e-6);
 const g = new Vec3();

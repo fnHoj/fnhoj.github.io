@@ -3,11 +3,13 @@ const ctx = canvas.getContext("2d")!;
 
 let t = performance.now();
 
-// let s = new Surface(new Array(8).fill(null).map((_, i) => {i++; return [i * 4, i * (2/3), i * Math.sqrt(5)/3];}));
-// let s = new Surface(new Array(8).fill(null).map((_, i) => {i++; return [i * 4, i, 0];}));
-// let s = new Surface(new Array(12).fill(null).map((_, i) => {i++; return [i * 6, i, 0];}));
-let s = new Surface(new Array(20).fill(null).map((_, i) => {const a = 0.15; i++; return [Math.round(PI2 * Math.sinh(a * i) / a), i, 0];}));
-let dist = 30;
+let s =
+    // new Surface(new Array(20).fill(null).map((_, i) => {i++; return [i * 4, i * (2/3), i * Math.sqrt(5)/3];}));
+    // new Surface(new Array(20).fill(null).map((_, i) => {i++; return [i * 10, i, 0];}));
+    // new Surface(new Array(20).fill(null).map((_, i) => {const a = 0.15; i++; return [Math.round(PI2 * Math.sinh(a * i) / a), i, 0];}));
+    new Surface(new Array(24).fill(null).map((_, i) => {i++; return [i < 12 ? i * 4 : Math.round(48 * Math.exp(i / 12 - 1)), i * 2 / 3, i * Math.sqrt(5) / 3 - 8];}));
+
+let dist = 36;
 let fl = 600;
 let theta = 0;
 let phi = 2.2;
