@@ -1,0 +1,3 @@
+[submodule "freeman"]
+	path = freeman
+	url = https://github.com/fnHoj/freeman
